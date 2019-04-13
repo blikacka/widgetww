@@ -10,6 +10,8 @@ import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.IBinder;
+import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebView;
@@ -29,11 +31,13 @@ public class WebShotService extends Service {
         webView.setWebViewClient(client);
 
         final WindowManager.LayoutParams params =
-                new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
+                new WindowManager.LayoutParams(
+                        WindowManager.LayoutParams.WRAP_CONTENT,
                         WindowManager.LayoutParams.WRAP_CONTENT,
                         android.os.Build.VERSION.SDK_INT >= 26 ? WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY : WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
                         WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                        PixelFormat.TRANSLUCENT);
+                        PixelFormat.TRANSLUCENT
+                );
         params.x = 0;
         params.y = 0;
         params.width = 0;
@@ -49,6 +53,7 @@ public class WebShotService extends Service {
         //JSInterface = new JavaScriptInterface(this);
         //webView.addJavascriptInterface(JSInterface, "JSInterface");
 
+        //webView.loadUrl("http://192.168.2.193/widgetww");
         webView.loadUrl("http://192.168.2.35/widgetww");
 
         return START_STICKY;
@@ -59,11 +64,17 @@ public class WebShotService extends Service {
             final Point p = new Point();
             winManager.getDefaultDisplay().getSize(p);
 
-            webView.measure(View.MeasureSpec.makeMeasureSpec((p.x < p.y ? p.y : p.x),
-                    View.MeasureSpec.EXACTLY),
-                    View.MeasureSpec.makeMeasureSpec((p.x < p.y ? p.x : p.y),
-                            View.MeasureSpec.EXACTLY));
-            webView.layout(0, 0, webView.getMeasuredWidth(), webView.getMeasuredHeight());
+//            Log.d("XXXXX", String.valueOf(p.x) + " : " + String.valueOf(p.y));
+//
+//
+//            webView.measure(View.MeasureSpec.makeMeasureSpec((p.x < p.y ? p.y : p.x),
+//                    View.MeasureSpec.EXACTLY),
+//                    View.MeasureSpec.makeMeasureSpec((p.x < p.y ? p.x : p.y),
+//                           View.MeasureSpec.EXACTLY));
+//
+//            Log.d("XXXXX", String.valueOf("Measure - " + webView.getMeasuredWidth() + " : " + webView.getMeasuredHeight()));
+
+            webView.layout(0, 0, 600, 500);
 
             webView.postDelayed(capture, 1000);
         }
@@ -73,8 +84,11 @@ public class WebShotService extends Service {
         @Override
         public void run() {
             try {
-                final Bitmap bmp = Bitmap.createBitmap(webView.getWidth(),
-                        webView.getHeight(), Bitmap.Config.ARGB_8888);
+                final Bitmap bmp = Bitmap.createBitmap(
+                        webView.getWidth(),
+                        webView.getHeight(),
+                        Bitmap.Config.ARGB_8888
+                );
                 final Canvas c = new Canvas(bmp);
                 webView.draw(c);
 
@@ -90,8 +104,7 @@ public class WebShotService extends Service {
 
     private void updateWidgets(Bitmap bmp) {
         final AppWidgetManager widgetManager = AppWidgetManager.getInstance(this);
-        final int[] ids = widgetManager.getAppWidgetIds(
-                new ComponentName(this, WebWidgetProvider.class));
+        final int[] ids = widgetManager.getAppWidgetIds(new ComponentName(this, WebWidgetProvider.class));
 
         if (ids.length < 1) {
             return;
@@ -101,7 +114,7 @@ public class WebShotService extends Service {
         views.setImageViewBitmap(R.id.widget_image, bmp);
         widgetManager.updateAppWidget(ids, views);
 
-        Toast.makeText(this, "WebWidget Update", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "WebWidget Update", Toast.LENGTH_SHORT).show();
     }
 
     @Override

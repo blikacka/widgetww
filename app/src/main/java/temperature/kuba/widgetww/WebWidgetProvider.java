@@ -31,10 +31,10 @@ public class WebWidgetProvider extends AppWidgetProvider {
 
         if (android.os.Build.VERSION.SDK_INT >= 19) {
             ((AlarmManager) context.getSystemService(Context.ALARM_SERVICE))
-                    .setExact(AlarmManager.RTC, System.currentTimeMillis() + 30000, pi);
+                    .setExact(AlarmManager.RTC, System.currentTimeMillis() + 5000, pi);
         } else {
             ((AlarmManager) context.getSystemService(Context.ALARM_SERVICE))
-                    .set(AlarmManager.RTC, System.currentTimeMillis() + 30000, pi);
+                    .set(AlarmManager.RTC, System.currentTimeMillis() + 5000, pi);
         }
 
         Intent iService = new Intent(context, WebShotService.class);
