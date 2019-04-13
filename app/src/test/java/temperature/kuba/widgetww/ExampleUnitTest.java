@@ -1,4 +1,4 @@
-package temperature.kuba.tempera;
+package temperature.kuba.widgetww;
 
 import org.junit.Test;
 

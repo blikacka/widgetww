@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="temperature.kuba.tempera">
+    package="temperature.kuba.widgetww">
 
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,7 +22,7 @@
         </activity>
         <!-- Widget Broadcast receiver -->
         <receiver
-            android:name=".TimeWidgetProvider"
+            android:name=".WebWidgetProvider"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name" >
             <intent-filter>
@@ -32,7 +33,7 @@
                 android:resource="@xml/main_widget_info" />
         </receiver>
         <!-- Broadcast receiver -->
-        <receiver android:name=".AlarmManagerBroadcastReceiver"></receiver>
+        <service android:name=".WebShotService" />
     </application>
 
 
